@@ -18,7 +18,7 @@ const Rules = () => {
   return (
     <div className="flex items-center justify-center fixed bottom-5 w-full font-barlow md:bottom-10 lg:w-2/12 lg:right-0">
       <button
-        className="border-2 border-white rounded-lg p-2 w-6/12 text-white tracking-wider text-xl font-semibold"
+        className="border-2 border-white rounded-lg p-2 w-6/12 text-white tracking-wider text-xl font-semibold hover:bg-white hover:text-darkText hover:border-headerOutline hover:animate-fasterBounce"
         onClick={() => handleOpenRules("regular")}
       >
         RULES
@@ -26,11 +26,13 @@ const Rules = () => {
       <div
         className={`${
           gameType ? "block" : "hidden"
-        } flex items-center justify-center flex-col gap-24 fixed top-0 w-full h-full bg-white lg:left-0`}
+        } flex items-center justify-center flex-col gap-24 fixed top-0 w-full h-full bg-white lg:w-4/12 lg:gap-10 lg:h-[78%] lg:top-12 right-[33%] lg:rounded-xl lg:drop-shadow-2xl lg:backdrop-blur-3xl xl:gap-28`}
       >
         <div className="flex items-center gap-10 text-lg font-bold text-darkText">
           <button
-            className={gameType === "regular" ? "border-b-2 border-darkText" : ""}
+            className={
+              gameType === "regular" ? "border-b-2 border-darkText" : ""
+            }
             onClick={() => handleOpenRules("regular")}
           >
             REGULAR GAME RULES
