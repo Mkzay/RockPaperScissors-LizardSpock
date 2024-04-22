@@ -26,7 +26,7 @@ const Rules = () => {
       <div
         className={`${
           gameType ? "block" : "hidden"
-        } flex items-center justify-center flex-col gap-24 fixed top-0 w-full h-full bg-white lg:w-4/12 lg:gap-10 lg:h-[78%] lg:top-12 right-[33%] lg:rounded-xl lg:drop-shadow-2xl lg:backdrop-blur-3xl xl:gap-28`}
+        } flex items-center justify-center flex-col gap-24 fixed top-0 w-full h-full bg-white lg:w-4/12 lg:gap-10 lg:h-[78%] lg:top-12 lg:right-[33%] lg:rounded-xl lg:drop-shadow-2xl lg:backdrop-blur-3xl xl:gap-12`}
       >
         <div className="flex items-center gap-10 text-lg font-bold text-darkText">
           <button
