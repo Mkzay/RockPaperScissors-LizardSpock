@@ -1,44 +1,10 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
-  const [bgSound, setBgSound] = useState(null);
-  const [muted, setMuted] = useState(false);
-
   const clickSound = new Audio("/Sounds/click.wav");
   const clickedSound = () => {
     clickSound.play();
   };
-
-  useEffect(() => {
-    const audio = new Audio("/Sounds/homepage.wav");
-    audio.loop = true;
-    audio.play();
-    setBgSound(audio);
-
-    return () => {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    };
-  }, []);
-
-  const toggleSound = () => {
-    if (bgSound) {
-      if (bgSound.paused) {
-        bgSound.play();
-        setMuted(false);
-      } else {
-        bgSound.pause();
-        setMuted(true);
-      }
-    }
-  };
-
-  const soundIcon = muted ? faVolumeXmark : faVolumeHigh;
 
   return (
     <div className="flex items-center justify-center flex-col h-screen bg-gradient-to-br from-bG1 to-bG2 font-barlow font-semibold -tracking-widest]">
@@ -66,13 +32,6 @@ const Homepage = () => {
         >
           <button>Bonus Game</button>
         </Link>
-        <button
-          className="text-white text-xl fixed left-3 top-5"
-          onClick={toggleSound}
-          aria-label={muted ? "Unmute" : "Mute"}
-        >
-          <FontAwesomeIcon icon={soundIcon} />
-        </button>
       </div>
     </div>
   );
