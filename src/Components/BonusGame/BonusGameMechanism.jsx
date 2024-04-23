@@ -128,7 +128,7 @@ const BonusGameMechanism = ({ setBonusScore }) => {
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center justify-center bg-[url('Images/bg-pentagon.svg')] bg-no-repeat bg-contain h-80 w-8/12 md:w-5/12 lg:w-3/12">
+        <div className="flex flex-col items-center justify-center bg-[url('/Images/bg-pentagon.svg')] bg-no-repeat bg-contain h-80 w-8/12 md:w-5/12 lg:w-3/12">
           <div className="bg-gradient-to-r from-pG1 to-pG2 rounded-full fixed p-2 top-[19.3rem] right-6 md:p-3 md:right-40 md:top-[25rem] lg:right-[29rem] lg:top-72">
             <button className="h-20 w-20 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
               <img

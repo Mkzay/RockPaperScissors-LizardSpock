@@ -125,7 +125,7 @@ const RegularGameMechanism = ({ setRegularScore }) => {
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center justify-center bg-[url('Images/bg-triangle.svg')] bg-no-repeat bg-contain h-80 w-9/12 md:w-5/12 lg:w-3/12">
+        <div className="flex flex-col items-center justify-center bg-[url('/Images/bg-triangle.svg')] bg-no-repeat bg-contain h-80 w-9/12 md:w-5/12 lg:w-3/12">
           <div className="bg-gradient-to-r from-pG1 to-pG2 rounded-full fixed p-3 top-56 left-8 lg:top-62 lg:left-[27rem] xl:top-[13rem] xl:left-[30rem]">
             <button className="h-24 w-24 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
               <img
