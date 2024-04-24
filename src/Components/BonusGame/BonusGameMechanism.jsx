@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const BonusGameMechanism = ({ setBonusScore }) => {
   const [userChoice, setUserChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
+  const [showResultDiv, setShowResultDiv] = useState(false);
 
   const choices = ["rock", "paper", "scissors"];
   const clickSound = new Audio("/Sounds/click.wav");
@@ -62,70 +63,107 @@ const BonusGameMechanism = ({ setBonusScore }) => {
     setUserChoice(choice);
   };
 
+  // Create refs for the timeout IDs
+  const timeoutId1 = useRef(null);
+  const timeoutId2 = useRef(null);
+
   useEffect(() => {
     if (userChoice) {
-      const computerChoice = generateComputerChoice();
-      const result = determineWinner(userChoice, computerChoice);
-      setResult(result);
-      if (result === "User") {
-        winSound.play();
-        setBonusScore((prevScore) => prevScore + 1);
-      } else if (result === "Computer") {
-        loseSound.play();
-        setBonusScore((prevScore) => prevScore - 1);
-      } else {
-        tieSound.play();
-      }
+      const originalComputerChoice = generateComputerChoice();
+      setComputerChoice(null);
+      setShowResultDiv(false); // Reset the showResultDiv state
+
+      timeoutId1.current = setTimeout(() => {
+        setComputerChoice(originalComputerChoice);
+
+        const result = determineWinner(userChoice, originalComputerChoice);
+        setResult(result);
+        if (result === "User") {
+          winSound.play();
+          setBonusScore((prevScore) => prevScore + 1);
+        } else if (result === "Computer") {
+          loseSound.play();
+          setBonusScore((prevScore) => prevScore - 1);
+        } else {
+          tieSound.play();
+        }
+
+        // Show the result div with a delay
+        timeoutId2.current = setTimeout(() => {
+          setShowResultDiv(true);
+        }, 2000);
+      }, 2000);
     }
+
+    // Cleanup function
+    return () => {
+      clearTimeout(timeoutId1.current);
+      clearTimeout(timeoutId2.current);
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userChoice]);
+
+  const choiceColors = {
+    rock: "bg-gradient-to-r from-rG1 to-rG2 p-2 md:p-3 rounded-full",
+    paper: "bg-gradient-to-r from-pG1 to-pG2 p-2 md:p-3 rounded-full",
+    scissors: "bg-gradient-to-r from-sG1 to-sG2 p-2 md:p-3 rounded-full",
+    lizard: "bg-gradient-to-r from-lG1 to-lG2 p-2 md:p-3 rounded-full",
+    spock: "bg-gradient-to-r from-spG1 to-spG2 p-2 md:p-3 rounded-full",
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen pt-48 md:pt-20 lg:pt-32">
       {userChoice ? (
         <>
-          <div className="flex items-center justify-between gap-20 text-white font-semibold tracking-widest mt-0 mb-20 lg:mb-10">
+          <div className="flex items-center justify-between gap-20 text-white font-semibold tracking-widest mt-0 mb-20 lg:mb-5">
             <div className="flex flex-col-reverse items-center gap-5">
               <h2>YOU PICKED</h2>
-              <div className="h-24 w-24 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
-                <img
-                  className="bg-white rounded-full"
-                  src={choiceImages[userChoice]}
-                  alt={userChoice}
-                />
+              <div className={`${choiceColors[userChoice]}`}>
+                <div className="h-24 w-24 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
+                  <img
+                    className="bg-white rounded-full"
+                    src={choiceImages[userChoice]}
+                    alt={userChoice}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex flex-col-reverse items-center gap-5">
               <h2>THE HOUSE PICKED</h2>
-              <div className="h-24 w-24 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
-                <img
-                  className="bg-white rounded-full"
-                  src={choiceImages[computerChoice]}
-                  alt={computerChoice}
-                />
+              <div className={`${choiceColors[computerChoice]}`}>
+                <div className="h-24 w-24 bg-white rounded-full flex items-center justify-center md:h-28 md:w-28">
+                  <img
+                    className="bg-white rounded-full"
+                    src={choiceImages[computerChoice]}
+                    alt={computerChoice}
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center flex-col gap-5 mb-14">
-            <h2 className="text-white font-bold text-6xl">
-              {result === "User"
-                ? "YOU WIN"
-                : result === "Computer"
-                ? "YOU LOSE"
-                : "IT'S A TIE"}
-            </h2>
-            <button
-              className="bg-white rounded-md py-3 px-20 font-semibold text-base tracking-wider text-darkText"
-              onClick={() => {
-                if (clickSound.readyState >= 3) {
-                  clickSound.play();
-                }
-                setUserChoice(null);
-              }}
-            >
-              PLAY AGAIN
-            </button>
-          </div>
+          {showResultDiv && (
+            <div className="flex items-center justify-center flex-col gap-5 mb-14">
+              <h2 className="text-white font-bold text-6xl">
+                {result === "User"
+                  ? "YOU WIN"
+                  : result === "Computer"
+                  ? "YOU LOSE"
+                  : "IT'S A TIE"}
+              </h2>
+              <button
+                className="bg-white rounded-md py-3 px-20 font-semibold text-base tracking-wider text-darkText"
+                onClick={() => {
+                  if (clickSound.readyState >= 3) {
+                    clickSound.play();
+                  }
+                  setUserChoice(null);
+                }}
+              >
+                PLAY AGAIN
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <div className="flex flex-col items-center justify-center bg-[url('/Images/bg-pentagon.svg')] bg-no-repeat bg-contain h-80 w-8/12 md:w-5/12 lg:w-3/12">
